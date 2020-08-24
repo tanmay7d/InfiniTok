@@ -1,26 +1,34 @@
 import React from 'react';
-import {StyleSheet, View, Text} from 'react-native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import Login from './pages/Login';
+import Signup from './pages/SignUp';
+import GroupScreen from './pages/GroupScreen';
+const AuthStack = createStackNavigator();
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>Hello There</Text>
-      </View>
-    );
-  }
-}
+const Navig = () => {
+  return (
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        <AuthStack.Screen
+          name="Login"
+          component={Login}
+          options={{headerShown: false}}
+        />
+        <AuthStack.Screen name="Signup" component={Signup} />
+        <AuthStack.Screen
+          name="Groups"
+          component={GroupScreen}
+          options={{
+            title: 'Groups',
+            headerTitleStyle: {
+              color: 'dodgerblue',
+            },
+          }}
+        />
+      </AuthStack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#a9a9a9',
-  },
-
-  text: {
-    color: 'dodgerblue',
-    fontSize: 28,
-  },
-});
+export default Navig;
