@@ -27,9 +27,7 @@ const Login = ({navigation}) => {
         placeholderTextColor="#696969"
       />
 
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => navigation.navigate('Groups')}>
+      <TouchableOpacity style={styles.loginButton}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
       <View style={styles.signup}>
@@ -46,6 +44,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    justifyContent: 'center',
     backgroundColor: '#fff',
   },
 

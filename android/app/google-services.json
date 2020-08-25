@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "329596131489",
+    "firebase_url": "https://infinitok-8202b.firebaseio.com",
+    "project_id": "infinitok-8202b",
+    "storage_bucket": "infinitok-8202b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329596131489:android:d1c62a08ed4b46703e38e0",
+        "android_client_info": {
+          "package_name": "com.infinitok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "329596131489-shpcsqfl8gpcicj29o53nns2vjspoime.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQn2cy0AGcRoAR68EwO8OD3FLQrCf1ALc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "329596131489-shpcsqfl8gpcicj29o53nns2vjspoime.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
