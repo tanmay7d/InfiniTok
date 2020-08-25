@@ -1,9 +1,8 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
-import Login from './pages/Login';
-import Signup from './pages/SignUp';
-import GroupScreen from './pages/GroupScreen';
+import Login from './screens/LoginScreen';
+import Signup from './screens/SignUpScreen';
 const AuthStack = createStackNavigator();
 
 const Navig = () => {
@@ -16,16 +15,6 @@ const Navig = () => {
           options={{headerShown: false}}
         />
         <AuthStack.Screen name="Signup" component={Signup} />
-        <AuthStack.Screen
-          name="Groups"
-          component={GroupScreen}
-          options={{
-            title: 'Groups',
-            headerTitleStyle: {
-              color: 'dodgerblue',
-            },
-          }}
-        />
       </AuthStack.Navigator>
     </NavigationContainer>
   );
