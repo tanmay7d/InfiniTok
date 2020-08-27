@@ -10,6 +10,10 @@ import {
 
 import Logo from '../components/Logo';
 import {TouchableOpacity} from 'react-native';
+import {AddUser} from '../src/network/compile';
+import {setAsyncStorage, keys} from '../src/asyncStorage/asyncStorage';
+import {setUniqueValue} from '../src/utility/constants/constants';
+import firebase from '../src/firebase/firebase';
 
 const Signup = ({navigation}) => {
   const [credentials, setCredentials] = useState({
@@ -39,17 +43,36 @@ const Signup = ({navigation}) => {
       Alert.alert('No Username Found', 'Please set username');
     } else if (!email) {
       Alert.alert('No Email Found', 'Please Enter Your Email Address');
-    } else if (!verificationCode) {
-      Alert.alert(
-        'Message',
-        'Please enter the verification code which is sent on email',
-      );
     } else if (!newPassword) {
       Alert.alert('Message', 'Please Set A Password');
     } else if (!confirm) {
       Alert.alert('Confirmation Required', 'Please confirm your new password');
+    } else if (newPassword !== confirm) {
+      alert('Password Did Not Match. Please Retry');
     } else {
-      ALert.alert(JSON.stringify(credentials));
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(email, newPassword)
+        .then(() => {
+          console.log(firebase.auth().currentUser.uid);
+          let uid = firebase.auth().currentUser.uid;
+          let name = firebase.auth().currentUser.name;
+          let profileImg = '';
+          AddUser(name, email, uid, profileImg)
+            .then(() => {
+              console.log('createUserWithEmailAndPassword success');
+              //setAsyncStorage(keys.uuid, uid);
+              //setUniqueValue(uid);
+              navigation.navigate('Dashboard');
+            })
+            .catch((err) => {
+              alert(err);
+              console.log("you've an error");
+            });
+        })
+        .catch((err) => {
+          alert(err);
+        });
     }
   };
   return (
@@ -66,16 +89,11 @@ const Signup = ({navigation}) => {
         style={styles.inputBox}
         placeholder="Email"
         value={email}
+        keyboardType={'email-address'}
         placeholderTextColor="#696969"
         onChangeText={(text) => handleOnChange('email', text)}
       />
-      <TextInput
-        style={styles.inputBox}
-        placeholder="Verification Code(sent on email)"
-        value={verificationCode}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('verificationCode', text)}
-      />
+
       <TextInput
         secureTextEntry={true}
         style={styles.inputBox}
