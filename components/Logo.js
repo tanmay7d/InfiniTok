@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   logoText: {
-    fontSize: 40,
+    fontSize: 50,
     color: '#1ABC9C',
     fontWeight: 'bold',
     fontFamily: 'sans-serif-condensed',

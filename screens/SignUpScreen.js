@@ -1,61 +1,106 @@
-import React from 'react';
-import {StyleSheet, ScrollView, View, Text, TextInput} from 'react-native';
+import React, {useState} from 'react';
+import {
+  StyleSheet,
+  ScrollView,
+  View,
+  Text,
+  TextInput,
+  Alert,
+} from 'react-native';
 
 import Logo from '../components/Logo';
 import {TouchableOpacity} from 'react-native';
 
 const Signup = ({navigation}) => {
+  const [credentials, setCredentials] = useState({
+    newUsername: '',
+    password: '',
+    email: '',
+    verificationCode: '',
+    newPassword: '',
+    confirm,
+  });
+  const {
+    newUsername,
+    email,
+    verificationCode,
+    newPassword,
+    confirm,
+  } = credentials;
+  const handleOnChange = (name, value) => {
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  const onLoginPress = () => {
+    if (!newUsername) {
+      Alert.alert('No Username Found', 'Please set username');
+    } else if (!email) {
+      Alert.alert('No Email Found', 'Please Enter Your Email Address');
+    } else if (!verificationCode) {
+      Alert.alert(
+        'Message',
+        'Please enter the verification code which is sent on email',
+      );
+    } else if (!newPassword) {
+      Alert.alert('Message', 'Please Set A Password');
+    } else if (!confirm) {
+      Alert.alert('Confirmation Required', 'Please confirm your new password');
+    } else {
+      ALert.alert(JSON.stringify(credentials));
+    }
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Logo text="Sign Up Now For Free" />
-      <View style={styles.container}>
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Name"
-          placeholderTextColor="#696969"
-        />
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Last Name"
-          placeholderTextColor="#696969"
-        />
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Email Address"
-          placeholderTextColor="#696969"
-        />
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Enter Verification Code(Sent on Email)"
-          placeholderTextColor="#696969"
-        />
-        <TextInput
-          style={styles.inputBox}
-          placeholder="Set Username"
-          placeholderTextColor="#696969"
-        />
-        <TextInput
-          secureTextEntry={true}
-          style={styles.inputBox}
-          placeholder="Set New Password"
-          placeholderTextColor="#696969"
-        />
-        <TextInput
-          secureTextEntry={true}
-          style={styles.inputBox}
-          placeholder="Confirm New Password"
-          placeholderTextColor="#696969"
-        />
-
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginText}>Sign Up</Text>
-        </TouchableOpacity>
-      </View>
-
+      <Logo text="Say Hello To Your App" />
+      <TextInput
+        style={styles.inputBox}
+        placeholder="New Username"
+        value={newUsername}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('newUsername', text)}
+      />
+      <TextInput
+        style={styles.inputBox}
+        placeholder="Email"
+        value={email}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('email', text)}
+      />
+      <TextInput
+        style={styles.inputBox}
+        placeholder="Verification Code(sent on email)"
+        value={verificationCode}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('verificationCode', text)}
+      />
+      <TextInput
+        secureTextEntry={true}
+        style={styles.inputBox}
+        placeholder="New Password"
+        value={newPassword}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('newPassword', text)}
+      />
+      <TextInput
+        secureTextEntry={true}
+        style={styles.inputBox}
+        placeholder="Confirm Password"
+        value={confirm}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('confirm', text)}
+      />
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => onLoginPress()}>
+        <Text style={styles.loginText}>Signup</Text>
+      </TouchableOpacity>
       <View style={styles.signup}>
         <Text style={{fontSize: 20}}>Already Have An Account?</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.signButton}>Sign In</Text>
+          <Text style={styles.signButton}> Login</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -64,15 +109,13 @@ const Signup = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#fff',
   },
 
   signup: {
-    flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'row',
   },
