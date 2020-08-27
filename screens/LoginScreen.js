@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   View,
   Text,
   TouchableOpacity,
   TextInput,
+  Alert,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -12,22 +13,49 @@ import Logo from '../components/Logo';
 import {ScrollView} from 'react-native';
 
 const Login = ({navigation}) => {
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: '',
+  });
+  const {username, password} = credentials;
+  const handleOnChange = (name, value) => {
+    setCredentials({
+      ...credentials,
+      [name]: value,
+    });
+  };
+
+  const onLoginPress = () => {
+    if (!username) {
+      Alert.alert('No Email Found', 'Please enter a valid email');
+    } else if (!password) {
+      Alert.alert('No Password Found', 'Please Enter Your Password');
+    } else {
+      alert(JSON.stringify(credentials));
+    }
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Logo text="Say Hello To Your App" />
       <TextInput
         style={styles.inputBox}
         placeholder="Username"
+        value={username}
         placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('username', text)}
       />
       <TextInput
         secureTextEntry={true}
         style={styles.inputBox}
         placeholder="Password"
+        value={password}
         placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('password', text)}
       />
 
-      <TouchableOpacity style={styles.loginButton}>
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => onLoginPress()}>
         <Text style={styles.loginText}>Login</Text>
       </TouchableOpacity>
       <View style={styles.signup}>

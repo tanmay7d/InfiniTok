@@ -5,8 +5,11 @@ export default class Logo extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={require('../assets/images/logo.jpg')} />
-        <Text style={styles.logoText}>INFINITOK</Text>
+        <Image
+          source={require('../assets/images/logo.jpg')}
+          style={{width: 350}}
+        />
+        <Text style={styles.logoText}>INFINITALK</Text>
       </View>
     );
   }
