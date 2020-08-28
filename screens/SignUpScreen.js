@@ -11,26 +11,16 @@ import {
 import Logo from '../components/Logo';
 import {TouchableOpacity} from 'react-native';
 import {AddUser} from '../src/network/compile';
-import {setAsyncStorage, keys} from '../src/asyncStorage/asyncStorage';
-import {setUniqueValue} from '../src/utility/constants/constants';
 import firebase from '../src/firebase/firebase';
 
 const Signup = ({navigation}) => {
+  console.ignoredYellowBox = ['Setting a timer'];
   const [credentials, setCredentials] = useState({
-    newUsername: '',
-    password: '',
     email: '',
-    verificationCode: '',
     newPassword: '',
     confirm,
   });
-  const {
-    newUsername,
-    email,
-    verificationCode,
-    newPassword,
-    confirm,
-  } = credentials;
+  const {username, email, newPassword, confirm} = credentials;
   const handleOnChange = (name, value) => {
     setCredentials({
       ...credentials,
@@ -39,9 +29,7 @@ const Signup = ({navigation}) => {
   };
 
   const onLoginPress = () => {
-    if (!newUsername) {
-      Alert.alert('No Username Found', 'Please set username');
-    } else if (!email) {
+    if (!email) {
       Alert.alert('No Email Found', 'Please Enter Your Email Address');
     } else if (!newPassword) {
       Alert.alert('Message', 'Please Set A Password');
@@ -54,15 +42,12 @@ const Signup = ({navigation}) => {
         .auth()
         .createUserWithEmailAndPassword(email, newPassword)
         .then(() => {
-          console.log(firebase.auth().currentUser.uid);
           let uid = firebase.auth().currentUser.uid;
-          let name = firebase.auth().currentUser.name;
+          console.log(firebase.auth().currentUser.uid);
           let profileImg = '';
-          AddUser(name, email, uid, profileImg)
+          AddUser(email, uid, profileImg)
             .then(() => {
               console.log('createUserWithEmailAndPassword success');
-              //setAsyncStorage(keys.uuid, uid);
-              //setUniqueValue(uid);
               navigation.navigate('Dashboard');
             })
             .catch((err) => {
@@ -78,13 +63,6 @@ const Signup = ({navigation}) => {
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <Logo text="Say Hello To Your App" />
-      <TextInput
-        style={styles.inputBox}
-        placeholder="New Username"
-        value={newUsername}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('newUsername', text)}
-      />
       <TextInput
         style={styles.inputBox}
         placeholder="Email"

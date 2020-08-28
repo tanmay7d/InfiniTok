@@ -11,13 +11,16 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Logo from '../components/Logo';
 import {ScrollView} from 'react-native';
-
+import {loginRequest} from '../src/network/compile';
+import setAsyncStorage, {keys} from '../src/asyncStorage/asyncStorage';
+import firebase from '../src/firebase/firebase';
 const Login = ({navigation}) => {
+  console.ignoredYellowBox = ['Setting a timer'];
   const [credentials, setCredentials] = useState({
-    username: '',
+    email: '',
     password: '',
   });
-  const {username, password} = credentials;
+  const {email, password} = credentials;
   const handleOnChange = (name, value) => {
     setCredentials({
       ...credentials,
@@ -26,12 +29,25 @@ const Login = ({navigation}) => {
   };
 
   const onLoginPress = () => {
-    if (!username) {
+    if (!email) {
       Alert.alert('No Email Found', 'Please enter a valid email');
     } else if (!password) {
       Alert.alert('No Password Found', 'Please Enter Your Password');
     } else {
-      alert(JSON.stringify(credentials));
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then((res) => {
+          console.log(res);
+          console.log('User logged in successfully!');
+          navigation.navigate('Dashboard');
+        })
+        .catch((err) => {
+          Alert.alert(
+            'Invalid Email or Password',
+            'Please enter a valid email and correct Password',
+          );
+        });
     }
   };
   return (
@@ -39,10 +55,10 @@ const Login = ({navigation}) => {
       <Logo text="Say Hello To Your App" />
       <TextInput
         style={styles.inputBox}
-        placeholder="Username"
-        value={username}
+        placeholder="Email"
+        value={email}
         placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('username', text)}
+        onChangeText={(text) => handleOnChange('email', text)}
       />
       <TextInput
         secureTextEntry={true}
