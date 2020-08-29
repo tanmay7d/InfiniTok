@@ -6,6 +6,9 @@ import {
   TouchableOpacity,
   TextInput,
   Alert,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
@@ -51,36 +54,43 @@ const Login = ({navigation}) => {
     }
   };
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Logo text="Say Hello To Your App" />
-      <TextInput
-        style={styles.inputBox}
-        placeholder="Email"
-        value={email}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('email', text)}
-      />
-      <TextInput
-        secureTextEntry={true}
-        style={styles.inputBox}
-        placeholder="Password"
-        value={password}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('password', text)}
-      />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset="-50">
+      <TouchableWithoutFeedback>
+        <View style={styles.container}>
+          <Logo text="Say Hello To Your App" />
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Email"
+            value={email}
+            placeholderTextColor="#696969"
+            onChangeText={(text) => handleOnChange('email', text)}
+          />
+          <TextInput
+            secureTextEntry={true}
+            style={styles.inputBox}
+            placeholder="Password"
+            value={password}
+            placeholderTextColor="#696969"
+            onChangeText={(text) => handleOnChange('password', text)}
+          />
 
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => onLoginPress()}>
-        <Text style={styles.loginText}>Login</Text>
-      </TouchableOpacity>
-      <View style={styles.signup}>
-        <Text style={{fontSize: 20}}>Don't Have An Account Yet?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-          <Text style={styles.signButton}> Signup</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => onLoginPress()}>
+            <Text style={styles.loginText}>Login</Text>
+          </TouchableOpacity>
+          <View style={styles.signup}>
+            <Text style={{fontSize: 20}}>Don't Have An Account Yet?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <Text style={styles.signButton}> Signup</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 

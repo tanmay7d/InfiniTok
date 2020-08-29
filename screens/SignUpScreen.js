@@ -6,6 +6,9 @@ import {
   Text,
   TextInput,
   Alert,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 
 import Logo from '../components/Logo';
@@ -61,45 +64,52 @@ const Signup = ({navigation}) => {
     }
   };
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <Logo text="Say Hello To Your App" />
-      <TextInput
-        style={styles.inputBox}
-        placeholder="Email"
-        value={email}
-        keyboardType={'email-address'}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('email', text)}
-      />
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset="-50">
+      <TouchableWithoutFeedback>
+        <ScrollView contentContainerStyle={styles.container}>
+          <Logo text="Say Hello To Your App" />
+          <TextInput
+            style={styles.inputBox}
+            placeholder="Email"
+            value={email}
+            keyboardType={'email-address'}
+            placeholderTextColor="#696969"
+            onChangeText={(text) => handleOnChange('email', text)}
+          />
 
-      <TextInput
-        secureTextEntry={true}
-        style={styles.inputBox}
-        placeholder="New Password"
-        value={newPassword}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('newPassword', text)}
-      />
-      <TextInput
-        secureTextEntry={true}
-        style={styles.inputBox}
-        placeholder="Confirm Password"
-        value={confirm}
-        placeholderTextColor="#696969"
-        onChangeText={(text) => handleOnChange('confirm', text)}
-      />
-      <TouchableOpacity
-        style={styles.loginButton}
-        onPress={() => onLoginPress()}>
-        <Text style={styles.loginText}>Signup</Text>
-      </TouchableOpacity>
-      <View style={styles.signup}>
-        <Text style={{fontSize: 20}}>Already Have An Account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.signButton}> Login</Text>
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+          <TextInput
+            secureTextEntry={true}
+            style={styles.inputBox}
+            placeholder="New Password"
+            value={newPassword}
+            placeholderTextColor="#696969"
+            onChangeText={(text) => handleOnChange('newPassword', text)}
+          />
+          <TextInput
+            secureTextEntry={true}
+            style={styles.inputBox}
+            placeholder="Confirm Password"
+            value={confirm}
+            placeholderTextColor="#696969"
+            onChangeText={(text) => handleOnChange('confirm', text)}
+          />
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => onLoginPress()}>
+            <Text style={styles.loginText}>Signup</Text>
+          </TouchableOpacity>
+          <View style={styles.signup}>
+            <Text style={{fontSize: 20}}>Already Have An Account?</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+              <Text style={styles.signButton}> Login</Text>
+            </TouchableOpacity>
+          </View>
+        </ScrollView>
+      </TouchableWithoutFeedback>
+    </KeyboardAvoidingView>
   );
 };
 
