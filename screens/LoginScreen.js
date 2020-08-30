@@ -14,7 +14,6 @@ import {createStackNavigator} from '@react-navigation/stack';
 import {NavigationContainer} from '@react-navigation/native';
 import Logo from '../components/Logo';
 import {ScrollView} from 'react-native';
-import {loginRequest} from '../src/network/compile';
 import setAsyncStorage, {keys} from '../src/asyncStorage/asyncStorage';
 import firebase from '../src/firebase/firebase';
 const Login = ({navigation}) => {

@@ -8,6 +8,10 @@ import {
   Alert,
 } from 'react-native';
 import {Icon} from 'react-native-elements';
+import LogOutUser from '../src/network/logout';
+import {clearAsyncStorage} from '../src/asyncStorage/asyncStorage';
+import firebase from '../src/firebase/firebase';
+import uuid from '../src/utility/constants/constants';
 
 const Dashboard = ({navigation}) => {
   useLayoutEffect(() => {
@@ -22,9 +26,7 @@ const Dashboard = ({navigation}) => {
             Alert.alert('Logout', 'Are You Sure You Want To Logout?', [
               {
                 text: 'Yes',
-                onPress: () => {
-                  Alert.alert('Logged Out Successfully', 'Thank You');
-                },
+                onPress: () => logout(),
               },
               {
                 text: 'No',
@@ -35,6 +37,24 @@ const Dashboard = ({navigation}) => {
       ),
     });
   }, [navigation]);
+
+  const logout = () => {
+    LogOutUser()
+      .then(() => {
+        clearAsyncStorage()
+          .then(() => {
+            console.log('Logged Out Successfully and Cleared Async Storage');
+            navigation.navigate('Login');
+          })
+          .catch((error) => {
+            alert(error);
+          });
+      })
+      .catch((err) => {
+        alert(err);
+      });
+  };
+
   return (
     <View>
       <Text>Hello</Text>

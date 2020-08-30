@@ -1,6 +1,7 @@
 import firebase from '../../firebase/firebase';
 
-const AddUser = async (name, email, uid, profileImg) => {
+const AddUser = async (name, email, uid) => {
+  console.log('Input values : ', name + email + uid);
   try {
     return await firebase
       .database()
@@ -9,7 +10,7 @@ const AddUser = async (name, email, uid, profileImg) => {
         name: name,
         email: email,
         uuid: uid,
-        profileImg: profileImg,
+        //profileImg: profileImg,
       });
   } catch (error) {
     return error;

@@ -19,11 +19,12 @@ import firebase from '../src/firebase/firebase';
 const Signup = ({navigation}) => {
   console.ignoredYellowBox = ['Setting a timer'];
   const [credentials, setCredentials] = useState({
+    name: '',
     email: '',
-    newPassword: '',
+    password: '',
     confirm,
   });
-  const {username, email, newPassword, confirm} = credentials;
+  const {name, email, password, confirm} = credentials;
   const handleOnChange = (name, value) => {
     setCredentials({
       ...credentials,
@@ -32,84 +33,86 @@ const Signup = ({navigation}) => {
   };
 
   const onLoginPress = () => {
-    if (!email) {
+    if (!name) {
+      Alert.alert('Enter Name', 'Pleae enter your name');
+    } else if (!email) {
       Alert.alert('No Email Found', 'Please Enter Your Email Address');
-    } else if (!newPassword) {
+    } else if (!password) {
       Alert.alert('Message', 'Please Set A Password');
     } else if (!confirm) {
       Alert.alert('Confirmation Required', 'Please confirm your new password');
-    } else if (newPassword !== confirm) {
+    } else if (password !== confirm) {
       alert('Password Did Not Match. Please Retry');
     } else {
+      let firstName = name;
+      let email_id = email;
       firebase
         .auth()
-        .createUserWithEmailAndPassword(email, newPassword)
+        .createUserWithEmailAndPassword(email, password)
         .then(() => {
-          let uid = firebase.auth().currentUser.uid;
-          console.log(firebase.auth().currentUser.uid);
-          let profileImg = '';
-          AddUser(email, uid, profileImg)
-            .then(() => {
-              console.log('createUserWithEmailAndPassword success');
-              navigation.navigate('Dashboard');
-            })
-            .catch((err) => {
-              alert(err);
-              console.log("you've an error");
+          console.log('Response user object : ', firebase.auth().currentUser);
+          firebase
+            .database()
+            .ref('users/' + name)
+            .set({
+              firstName: firstName,
+              email: email_id,
+              uid: firebase.auth().currentUser.uid,
             });
+          navigation.navigate('Dashboard');
         })
-        .catch((err) => {
-          alert(err);
+        .catch((error) => {
+          alert(error);
         });
     }
   };
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      keyboardVerticalOffset="-50">
-      <TouchableWithoutFeedback>
-        <ScrollView contentContainerStyle={styles.container}>
-          <Logo text="Say Hello To Your App" />
-          <TextInput
-            style={styles.inputBox}
-            placeholder="Email"
-            value={email}
-            keyboardType={'email-address'}
-            placeholderTextColor="#696969"
-            onChangeText={(text) => handleOnChange('email', text)}
-          />
+    <ScrollView contentContainerStyle={styles.container}>
+      <Logo text="Say Hello To Your App" />
+      <TextInput
+        style={styles.inputBox}
+        placeholder="Name"
+        value={name}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('name', text)}
+      />
+      <TextInput
+        style={styles.inputBox}
+        placeholder="Email"
+        value={email}
+        keyboardType={'email-address'}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('email', text)}
+      />
 
-          <TextInput
-            secureTextEntry={true}
-            style={styles.inputBox}
-            placeholder="New Password"
-            value={newPassword}
-            placeholderTextColor="#696969"
-            onChangeText={(text) => handleOnChange('newPassword', text)}
-          />
-          <TextInput
-            secureTextEntry={true}
-            style={styles.inputBox}
-            placeholder="Confirm Password"
-            value={confirm}
-            placeholderTextColor="#696969"
-            onChangeText={(text) => handleOnChange('confirm', text)}
-          />
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => onLoginPress()}>
-            <Text style={styles.loginText}>Signup</Text>
-          </TouchableOpacity>
-          <View style={styles.signup}>
-            <Text style={{fontSize: 20}}>Already Have An Account?</Text>
-            <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-              <Text style={styles.signButton}> Login</Text>
-            </TouchableOpacity>
-          </View>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+      <TextInput
+        secureTextEntry={true}
+        style={styles.inputBox}
+        placeholder="New Password"
+        value={password}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('password', text)}
+      />
+      <TextInput
+        secureTextEntry={true}
+        style={styles.inputBox}
+        placeholder="Confirm Password"
+        value={confirm}
+        placeholderTextColor="#696969"
+        onChangeText={(text) => handleOnChange('confirm', text)}
+      />
+      <TouchableOpacity
+        style={styles.loginButton}
+        onPress={() => onLoginPress()}>
+        <Text style={styles.loginText}>Signup</Text>
+      </TouchableOpacity>
+      <View style={styles.signup}>
+        <Text style={{fontSize: 20}}>Already Have An Account?</Text>
+        <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.signButton}> Login</Text>
+        </TouchableOpacity>
+      </View>
+    </ScrollView>
   );
 };
 
