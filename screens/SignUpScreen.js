@@ -15,9 +15,10 @@ import Logo from '../components/Logo';
 import {TouchableOpacity} from 'react-native';
 import {AddUser} from '../src/network/compile';
 import firebase from '../src/firebase/firebase';
+import {setAsyncStorage, keys} from '../src/asyncStorage/asyncStorage';
+import {setUniqueValue} from '../src/utility/constants/constants';
 
 const Signup = ({navigation}) => {
-  console.ignoredYellowBox = ['Setting a timer'];
   const [credentials, setCredentials] = useState({
     name: '',
     email: '',
@@ -50,6 +51,8 @@ const Signup = ({navigation}) => {
         .auth()
         .createUserWithEmailAndPassword(email, password)
         .then(() => {
+          setAsyncStorage(keys.uuid, firebase.auth().currentUser.uid);
+          setUniqueValue(firebase.auth().currentUser.uid);
           console.log('Response user object : ', firebase.auth().currentUser);
           firebase
             .database()

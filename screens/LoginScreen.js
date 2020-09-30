@@ -17,7 +17,6 @@ import {ScrollView} from 'react-native';
 import setAsyncStorage, {keys} from '../src/asyncStorage/asyncStorage';
 import firebase from '../src/firebase/firebase';
 const Login = ({navigation}) => {
-  console.ignoredYellowBox = ['Setting a timer'];
   const [credentials, setCredentials] = useState({
     email: '',
     password: '',
@@ -49,6 +48,7 @@ const Login = ({navigation}) => {
             'Invalid Email or Password',
             'Please enter a valid email and correct Password',
           );
+          console.log(err);
         });
     }
   };
@@ -59,7 +59,7 @@ const Login = ({navigation}) => {
       keyboardVerticalOffset="-50">
       <TouchableWithoutFeedback>
         <View style={styles.container}>
-          <Logo text="Say Hello To Your App" />
+          <Logo />
           <TextInput
             style={styles.inputBox}
             placeholder="Email"

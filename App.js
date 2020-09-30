@@ -4,6 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import Login from './screens/LoginScreen';
 import Signup from './screens/SignUpScreen';
 import Dashboard from './screens/DashboardScreen';
+import Splash from './screens/SplashScreen';
 
 const AuthStack = createStackNavigator();
 
@@ -16,6 +17,11 @@ const Navig = () => {
           headerTitleAlign: 'center',
           headerStyle: {backgroundColor: '#6A9FEC'},
         }}>
+        <AuthStack.Screen
+          name="Splash"
+          component={Splash}
+          options={{headerShown: false}}
+        />
         <AuthStack.Screen
           name="Login"
           component={Login}

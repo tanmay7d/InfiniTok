@@ -11,11 +11,10 @@ const setAsyncStorage = async (key, item) => {
     console.log(error);
   }
 };
-
 const getAsyncStorage = async (key) => {
   try {
     const value = await AsyncStorage.getItem(key);
-    if (value) {
+    if (value !== null) {
       return value;
     } else {
       return null;
@@ -28,10 +27,10 @@ const getAsyncStorage = async (key) => {
 
 const clearAsyncStorage = async () => {
   try {
-    await AsyncStorage.clear();
+    AsyncStorage.clear();
   } catch (error) {
     console.log(error);
+    return null;
   }
 };
-
 export {setAsyncStorage, getAsyncStorage, clearAsyncStorage};
